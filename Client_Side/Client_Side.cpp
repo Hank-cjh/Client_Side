@@ -53,9 +53,23 @@ BOOL CClient_SideApp::InitInstance()
 
 	if (!AfxSocketInit())
 	{
-		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
+		AfxMessageBox(_T("初始化Socket库失败!"));
 		return FALSE;
 	}
+	m_pSocket = new CClientSocket();
+	if (!m_pSocket)
+	{
+		AfxMessageBox(_T("内存不足"));
+		return false;
+	}
+	if (!m_pSocket->Create())
+	{
+		AfxMessageBox(_T("创建套接字失败"));
+		return false;
+	}
+	CLoginDlg*pLogoDlg;//登录框
+	pLogoDlg = new CLoginDlg();
+	pLogoDlg->DoModal();
 
 
 	AfxEnableControlContainer();
@@ -108,5 +122,20 @@ BOOL CClient_SideApp::InitInstance()
 	// 由于对话框已关闭，所以将返回 FALSE 以便退出应用程序，
 	//  而不是启动应用程序的消息泵。
 	return FALSE;
+}
+
+int CClient_SideApp::ExitInstance()
+{
+	if (m_pSocket)
+	{
+		delete m_pSocket;
+		m_pSocket = NULL;
+	}
+	return 0;
+}
+
+CClientSocket * CClient_SideApp::GetMainSocket() const
+{
+	return m_pSocket;
 }
 

@@ -9,7 +9,8 @@
 #endif
 
 #include "resource.h"		// 主符号
-
+#include "ClientSocket.h"
+#include "LoginDlg.h"
 
 // CClient_SideApp: 
 // 有关此类的实现，请参阅 Client_Side.cpp
@@ -23,7 +24,9 @@ public:
 // 重写
 public:
 	virtual BOOL InitInstance();
-
+	virtual int ExitInstance();
+	CClientSocket*GetMainSocket()const;
+	CClientSocket*m_pSocket;
 // 实现
 
 	DECLARE_MESSAGE_MAP()
